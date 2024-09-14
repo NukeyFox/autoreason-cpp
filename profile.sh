@@ -27,7 +27,7 @@ fi
 # Define directories
 PROJECT_ROOT=$(pwd)
 BUILD_DIR="$PROJECT_ROOT/build/profile"
-TEST_EXECUTABLE="$BUILD_DIR/prover_test"
+BENCHMARK_EXECUTABLE="$BUILD_DIR/benchmark_prover"
 
 # Clean up any previous build artifacts
 echo "Cleaning up previous build..."
@@ -45,18 +45,18 @@ cmake -DCMAKE_BUILD_TYPE=Profile ../..
 echo "Building the project..."
 make
 
-# Run the test executable under Valgrind Callgrind
-if [ -f "$TEST_EXECUTABLE" ]; then
-    echo "Running tests with Valgrind Callgrind..."
-    valgrind --tool=callgrind --callgrind-out-file=callgrind.out "$TEST_EXECUTABLE"
+# Run the benchmark executable under Valgrind Callgrind
+if [ -f "$BENCHMARK_EXECUTABLE" ]; then
+    echo "Running benchmarks with Valgrind Callgrind..."
+    valgrind --tool=callgrind --instr-atstart=no --callgrind-out-file=callgrind.out "$BENCHMARK_EXECUTABLE"
 else
-    echo "Test executable not found. Please check your CMakeLists.txt and ensure it creates the test executable."
+    echo "Benchmark executable not found. Please check your CMakeLists.txt and ensure it creates the benchmark executable."
     exit 1
 fi
 
 # Analyze the profiling data
 echo "Analyzing profiling data with callgrind_annotate..."
-callgrind_annotate callgrind.out > callgrind_analysis.txt
+callgrind_annotate callgrind.out > "$PROJECT_ROOT/callgrind_analysis.txt"
 
 # Check if KCacheGrind is installed for visual analysis
 if command -v kcachegrind &> /dev/null; then

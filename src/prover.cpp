@@ -8,7 +8,10 @@ namespace autoreason {
 
     bool Prover::prove(const std::string& formula) {
         // Proof logic goes here
-        //std::cout << "Proving formula: " << formula << std::endl;
+        int i = formula.length();
+        int count = 0;
+        for (int j = 0; j < i; j++) {count += i;}
+        std::cout << "Proving formula: " << formula << count << std::endl;
         return true; // Placeholder
     }
 }

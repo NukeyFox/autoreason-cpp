@@ -17,13 +17,20 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up C++ compiler
-      uses: actions/setup-cpp@v2
-      with:
-        compiler: g++ # Use g++ or clang++
+    - name: Set up C++ compiler (g++)
+      run: sudo apt-get update && sudo apt-get install -y g++ cmake
 
     - name: Install dependencies
-      run: sudo apt-get install cmake libgtest-dev -y
+      run: sudo apt-get install -y libgtest-dev
+
+    - name: Build Google Test
+      run: |
+        cd /usr/src/gtest
+        sudo mkdir build
+        cd build
+        sudo cmake ..
+        sudo make
+        sudo cp *.a /usr/lib
 
     - name: Configure CMake
       run: cmake -B build -S .
