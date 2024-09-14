@@ -1,0 +1,26 @@
+{
+  "name": "C++ Dev Container with gtest",
+  "build": {
+    "dockerfile": "Dockerfile",  // Reference the Dockerfile in the same folder
+    "context": "."              // The build context is the root of your project
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+      },
+      "extensions": [
+        "ms-vscode.cpptools",                   // C/C++ extension
+        "ms-vscode.cmake-tools",                // CMake tools
+        "ms-vscode.makefile-tools",             // Makefile support extension
+        "ms-vscode.cpptools-extension-pack"     // C++ Extension Pack
+      ]
+    }
+  },
+  "forwardPorts": [],
+  "remoteUser": "vscode",      // The user to use in the container
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y build-essential cmake gdb", // Install C++ build tools
+  "mounts": [
+    "source=${localEnv:USERPROFILE}\\.ssh,target=/root/.ssh,type=bind,consistency=cached" // Corrected path for SSH key forwarding on Windows
+  ]
+}
